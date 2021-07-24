@@ -1,18 +1,39 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Welcome To Job.Net</h1>
+    <p class="p">This is the place for all the top roles</p>
+
+    <div v-if="error">
+      {{ error }}
+    </div>
+
+    <div v-if="jobs.length">
+      <JobsList :jobs="jobs" />
+    </div>
+
+    <div v-else>Loading jobs...</div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import getJobs from "../api/getJobs";
+import JobsList from "../components/JobsList.vue";
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
+  name: "Home",
+  components: { JobsList },
+  setup() {
+    const { jobs, error, load } = getJobs();
+    load();
+
+    return { jobs, error, load };
+  },
+};
 </script>
+
+<style>
+.p {
+  text-decoration: underline;
+  letter-spacing: 1px;
+}
+</style>
